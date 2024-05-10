@@ -10,14 +10,15 @@ project(BetfairStream VERSION 1.0
 
 find_package(Boost REQUIRED COMPONENTS program_options)
 
-add_executable(main
+add_executable(betfair-stream
                src/main.cpp
                src/async_stream.cpp
                src/handler.cpp)
-target_link_libraries(main PUBLIC
+target_link_libraries(betfair-stream PUBLIC
                       Boost::boost
                       Boost::program_options
                       ssl
                       crypto
                       pthread)
-target_compile_features(main PRIVATE cxx_std_20)
+target_compile_features(betfair-stream PRIVATE cxx_std_20)
+install(TARGETS betfair-stream)
