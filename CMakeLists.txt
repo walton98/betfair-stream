@@ -8,8 +8,13 @@ project(BetfairStream VERSION 1.0
                       DESCRIPTION "Betfair Stream Client"
                       LANGUAGES CXX)
 
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)
 
 add_executable(main main.cpp async_stream.cpp handler.cpp)
-target_link_libraries(main PUBLIC Boost::boost ssl crypto pthread)
+target_link_libraries(main PUBLIC
+                      Boost::boost
+                      Boost::program_options
+                      ssl
+                      crypto
+                      pthread)
 target_compile_features(main PRIVATE cxx_std_20)

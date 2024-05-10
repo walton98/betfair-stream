@@ -4,9 +4,12 @@
 
 #include "asio_utils.hpp"
 #include "async_stream.hpp"
+#include "config.hpp"
 #include "handler.hpp"
 
 int main() {
+  config::config cfg{"config.ini"};
+
   boost::asio::io_context ioc;
   auto work = boost::asio::make_work_guard(ioc.get_executor());
   auto asio_thread = std::thread([&]() { ioc.run(); });
@@ -22,7 +25,7 @@ int main() {
   // Create actors
   stream::stream async_client{"stream-api-integration.betfair.com", ioc,
                               stream_channel, handler_channel};
-  handler::handler handler{handler_channel, stream_channel};
+  handler::handler handler{handler_channel, stream_channel, cfg.handler_cfg()};
 
   // Start actors
   boost::asio::co_spawn(ioc, async_client.start(),
