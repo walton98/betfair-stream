@@ -14,6 +14,13 @@ std::string parse_buffer(auto &buffer) {
 
 namespace stream {
 
+stream::stream(const std::string &hostname, boost::asio::io_context &ioc,
+               types::stream_channel &channel,
+               types::handler_channel &handler_channel)
+    : ssl_context_(boost::asio::ssl::context::tls), socket_(ioc, ssl_context_),
+      resolver_(ioc), hostname_(hostname), channel_{channel},
+      handler_channel_{handler_channel} {}
+
 boost::asio::awaitable<void> stream::start() {
   co_await connect();
   boost::asio::co_spawn(socket_.get_executor(), rx(),
@@ -25,8 +32,9 @@ boost::asio::awaitable<void> stream::start() {
 boost::asio::awaitable<void> stream::connect() {
   auto endpoints =
       co_await resolver_.async_resolve(hostname_, "443", boost::asio::deferred);
-  co_await boost::asio::async_connect(socket_.next_layer(), endpoints,
-                                      boost::asio::deferred);
+  auto &socket = socket_.next_layer();
+  socket.set_option(boost::asio::ip::tcp::no_delay{true});
+  co_await boost::asio::async_connect(socket, endpoints, boost::asio::deferred);
   co_await socket_.async_handshake(boost::asio::ssl::stream_base::client,
                                    boost::asio::deferred);
 }
