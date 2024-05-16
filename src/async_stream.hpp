@@ -14,12 +14,9 @@ namespace stream {
 
 class stream {
 public:
-  stream(std::string hostname, boost::asio::io_context &ioc,
-         types::stream_channel &channel,
-         types::handler_channel &handler_channel)
-      : ssl_context_(boost::asio::ssl::context::tls),
-        socket_(ioc, ssl_context_), resolver_(ioc), hostname_(hostname),
-        channel_{channel}, handler_channel_{handler_channel} {}
+  stream(const std::string &hostname, boost::asio::io_context &,
+         types::stream_channel &,
+         types::handler_channel &);
 
   boost::asio::awaitable<void> start();
   boost::asio::awaitable<void> rx();
