@@ -9,6 +9,7 @@ project(BetfairStream VERSION 1.0
                       LANGUAGES CXX)
 
 find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(nlohmann_json REQUIRED)
 
 add_executable(betfair-stream
                src/main.cpp
@@ -17,6 +18,7 @@ add_executable(betfair-stream
 target_link_libraries(betfair-stream PUBLIC
                       Boost::boost
                       Boost::program_options
+                      nlohmann_json::nlohmann_json
                       ssl
                       crypto
                       pthread)
