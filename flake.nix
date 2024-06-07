@@ -14,7 +14,11 @@
           name = "betfair-stream";
           src = ./.;
           nativeBuildInputs = with pkgs; [ cmake ];
-          buildInputs = with pkgs; [ boost openssl ];
+          buildInputs = with pkgs; [
+            boost
+            openssl
+            nlohmann_json
+          ];
         };
       in {
         devShells.default = pkgs.mkShell {

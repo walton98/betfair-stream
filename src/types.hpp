@@ -14,6 +14,16 @@ using handler_channel = boost::asio::experimental::channel<void(
 using stream_channel = boost::asio::experimental::channel<void(
     boost::system::error_code, std::string)>;
 
+using market_id = std::string;
+using runner_id = uint64_t;
+using price = double;
+using volume = double;
+
+enum class side {
+  buy,
+  sell,
+};
+
 } // namespace types
 
 #endif
