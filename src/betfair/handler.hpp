@@ -10,8 +10,10 @@
 #include <boost/system/error_code.hpp>
 #include <nlohmann/json.hpp>
 
-#include "config.hpp"
-#include "types.hpp"
+#include "../config.hpp"
+#include "../types.hpp"
+
+namespace betfair {
 
 namespace handler {
 
@@ -89,10 +91,13 @@ private:
 
 } // namespace handler
 
-template <> struct std::formatter<handler::book_side> {
+} // namespace betfair
+
+template <> struct std::formatter<betfair::handler::book_side> {
   constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
 
-  auto format(const handler::book_side &bs, std::format_context &ctx) const {
+  auto format(const betfair::handler::book_side &bs,
+              std::format_context &ctx) const {
     std::format_to(ctx.out(), "[ ");
     for (const auto [price, vol] : bs.data) {
       if (price != 0 && vol != 0) {
@@ -103,19 +108,21 @@ template <> struct std::formatter<handler::book_side> {
   }
 };
 
-template <> struct std::formatter<handler::runner> {
+template <> struct std::formatter<betfair::handler::runner> {
   constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
 
-  auto format(const handler::runner &runner, std::format_context &ctx) const {
+  auto format(const betfair::handler::runner &runner,
+              std::format_context &ctx) const {
     return std::format_to(ctx.out(), "Buyers: {}\nSellers: {}\n",
                           runner.buyers(), runner.sellers());
   }
 };
 
-template <> struct std::formatter<handler::market> {
+template <> struct std::formatter<betfair::handler::market> {
   constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
 
-  auto format(const handler::market &market, std::format_context &ctx) const {
+  auto format(const betfair::handler::market &market,
+              std::format_context &ctx) const {
     for (const auto &[id, runner] : market.runners()) {
       std::format_to(ctx.out(), "Runner {}:\n{}", id, runner);
     }
@@ -123,10 +130,10 @@ template <> struct std::formatter<handler::market> {
   }
 };
 
-template <> struct std::formatter<handler::market_manager> {
+template <> struct std::formatter<betfair::handler::market_manager> {
   constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
 
-  auto format(const handler::market_manager &manager,
+  auto format(const betfair::handler::market_manager &manager,
               std::format_context &ctx) const {
     for (const auto &[id, market] : manager.markets()) {
       std::format_to(ctx.out(), "Market {}:\n{}\n", id, market);

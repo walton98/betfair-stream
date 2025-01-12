@@ -28,7 +28,7 @@ nix run
 Requires `config.ini` file, like so:
 
 ```ini
-[handler]
+[betfair]
 app_key=key
 session_token=token
 market_id=1.227301258

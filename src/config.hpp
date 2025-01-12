@@ -4,7 +4,6 @@
 #include <boost/program_options.hpp>
 #include <boost/program_options/variables_map.hpp>
 #include <fstream>
-#include <iostream>
 #include <string>
 
 namespace config {
@@ -18,11 +17,11 @@ struct handler_config {
 struct config {
 public:
   config(const std::string &filename) {
-    config_.add_options()("handler.app_key",
+    config_.add_options()("betfair.app_key",
                           boost::program_options::value(&handler_cfg_.app_key));
-    config_.add_options()("handler.session_token", boost::program_options::value(
+    config_.add_options()("betfair.session_token", boost::program_options::value(
                                                &handler_cfg_.session_token));
-    config_.add_options()("handler.market_id",
+    config_.add_options()("betfair.market_id",
                           boost::program_options::value(&handler_cfg_.market_id));
     parse(filename);
   }

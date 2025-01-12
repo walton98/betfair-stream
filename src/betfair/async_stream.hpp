@@ -8,7 +8,7 @@
 #include <boost/asio/experimental/channel.hpp>
 #include <boost/asio/ssl.hpp>
 
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace stream {
 
