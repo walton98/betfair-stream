@@ -8,6 +8,8 @@
 
 #include "handler.hpp"
 
+namespace betfair {
+
 namespace handler {
 
 handler::handler(types::handler_channel &channel,
@@ -120,3 +122,5 @@ void runner::update_volume(types::side side, size_t idx, types::price price,
 }
 
 } // namespace handler
+
+} // namespace betfair

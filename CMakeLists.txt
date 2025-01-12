@@ -13,8 +13,9 @@ find_package(nlohmann_json REQUIRED)
 
 add_executable(betfair-stream
                src/main.cpp
-               src/async_stream.cpp
-               src/handler.cpp)
+               src/betfair/async_stream.cpp
+               src/betfair/handler.cpp
+               src/smarkets/stream.cpp)
 target_link_libraries(betfair-stream PUBLIC
                       Boost::boost
                       Boost::program_options

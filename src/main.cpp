@@ -3,9 +3,10 @@
 #include <boost/asio.hpp>
 
 #include "asio_utils.hpp"
-#include "async_stream.hpp"
+#include "betfair/async_stream.hpp"
+#include "betfair/handler.hpp"
 #include "config.hpp"
-#include "handler.hpp"
+#include "smarkets/stream.hpp"
 
 int main() {
   config::config cfg{"config.ini"};
@@ -25,12 +26,17 @@ int main() {
   // Create actors
   stream::stream async_client{"stream-api-integration.betfair.com", ioc,
                               stream_channel, handler_channel};
-  handler::handler handler{handler_channel, stream_channel, cfg.handler_cfg()};
+  betfair::handler::handler handler{handler_channel, stream_channel,
+                                    cfg.handler_cfg()};
 
   // Start actors
   boost::asio::co_spawn(ioc, async_client.start(),
                         asio_utils::print_exception_token);
   boost::asio::co_spawn(ioc, handler.run(), asio_utils::print_exception_token);
+
+  boost::asio::ssl::context ctx{boost::asio::ssl::context::tlsv12_client};
+  smarkets::stream_session ss("sio-live.smarkets.com", ioc, ctx);
+  boost::asio::co_spawn(ioc, ss.connect(), asio_utils::print_exception_token);
 
   // Wait for everything to finish
   work.reset();
